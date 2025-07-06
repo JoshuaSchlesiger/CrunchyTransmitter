@@ -16,8 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:vibration/vibration.dart';
-
 class MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
   final String _storageKeyFilterIndex = 'filter';
@@ -595,12 +593,6 @@ class MyHomePageState extends State<MyHomePage> {
               ),
               child: ElevatedButton(
                 onPressed: () async {
-                  bool? hasVibrationPermission = await Vibration.hasVibrator();
-                  if (hasVibrationPermission != null &&
-                      hasVibrationPermission) {
-                    Vibration.vibrate(duration: 100);
-                  }
-
                   if (url == "") {
                     errorDialog(
                         "Aktuell ist der Anime bei Crunchyroll noch nicht angelegt.");
