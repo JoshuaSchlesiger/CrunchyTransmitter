@@ -1,9 +1,7 @@
 import 'package:crunchy_transmitter/fcm.dart';
-import 'package:crunchy_transmitter/subpages/no_internet_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'my_app/my_app.dart';
 
@@ -11,13 +9,6 @@ import 'my_app/my_app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var connectivityResult = await Connectivity().checkConnectivity();
-  bool isConnected = (connectivityResult == ConnectivityResult.mobile ||
-      connectivityResult == ConnectivityResult.wifi);
-
-  if (!isConnected) {
-    runApp(const NoInternetApp(title: "CrunchyTransmitter", text: 'Keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut.'));
-  } else {
     // Google FCM init
     await Firebase.initializeApp();
     FCM.instanceProcess();
@@ -26,5 +17,5 @@ Future<void> main() async {
     bool seenWelcomeScreen = prefs.getBool('seenWelcomeScreen') ?? false;
 
     runApp(MyApp(seenWelcomeScreen: seenWelcomeScreen));
-  }
+  
 }
