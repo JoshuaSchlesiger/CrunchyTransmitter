@@ -131,12 +131,11 @@ public class DatabaseManager {
                     Date existingDateOfWeekday = resultSet.getDate("dateOfWeekday");
                     String episodeResult = resultSet.getString("episode");
                     Date existingCorrectionDate = resultSet.getDate("dateOfCorrectionDate");
+                    Timestamp existingReleaseTime = resultSet.getTimestamp("releaseTime");
 
                     if (EnumWeekdays.isInCurrentWeek(existingDateOfWeekday)) {
 
                         int id = resultSet.getInt("id");
-
-                        Timestamp existingReleaseTime = resultSet.getTimestamp("releaseTime");
 
                         if (!episodeResult.equals(episode.getEpisode())) {
                             return -1;
@@ -180,9 +179,16 @@ public class DatabaseManager {
                                         animeId);
                             }
                         }
-
                         return id;
                     } else if (episodeResult.equals(episode.getEpisode()) && existingCorrectionDate == null) {
+                        return -1;
+                    }
+                    
+                    // keine Dopplungen importieren
+                    if (episodeResult.equals(episode.getEpisode())
+                            && (existingCorrectionDate == null ? episode.getDateOfCorrectionDate() == null : existingCorrectionDate.equals(episode.getDateOfCorrectionDate()))
+                            && existingDateOfWeekday.equals(episode.getDateOfWeekday())
+                            && (existingReleaseTime == null ? episode.getReleaseTime() == null : existingReleaseTime.equals(episode.getReleaseTime()))) {
                         return -1;
                     }
                 }
